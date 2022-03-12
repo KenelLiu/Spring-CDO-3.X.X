@@ -1,0 +1,64 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>cdo</groupId>
+		<artifactId>spring-cdo-parent</artifactId>
+		<version>3.0.0</version>
+	</parent>
+
+	<artifactId>spring-cdoUtil</artifactId>
+	<packaging>jar</packaging>
+	<name>spring-cdoUtil</name>
+	<url>http://maven.apache.org</url>
+  
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  <dependencies>
+  		<dependency>
+			<groupId>cdo</groupId>
+			<artifactId>spring-cdoLib</artifactId>
+			<version>${project.cdo.version}</version>
+		</dependency>	
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+		</dependency>
+	    <dependency>
+		  <groupId>org.apache.httpcomponents</groupId>
+		  <artifactId>httpmime</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>javax.servlet</groupId>
+		    <artifactId>javax.servlet-api</artifactId>
+		    <scope>provided</scope>
+		</dependency>		
+		<!-- 支持第三RSA加解密  可指定长度   性能优于 sun rsa  因原生sun rsa 至少要512 -->
+		<dependency>
+		    <groupId>org.bouncycastle</groupId>
+		    <artifactId>bcprov-jdk15on</artifactId>
+		</dependency>				
+		<!-- sftp over ssh-->
+		<dependency>
+		    <groupId>com.jcraft</groupId>
+		    <artifactId>jsch</artifactId>
+		</dependency>
+		<!-- scp 		 
+		<dependency>
+		    <groupId>ch.ethz.ganymed</groupId>
+		    <artifactId>ganymed-ssh2</artifactId>
+		    <version>262</version>
+		</dependency>
+		-->		
+		<!-- ftp -->
+		<dependency>
+			<groupId>commons-net</groupId>
+			<artifactId>commons-net</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jcl</artifactId>			
+		</dependency>			
+	</dependencies>
+</project>

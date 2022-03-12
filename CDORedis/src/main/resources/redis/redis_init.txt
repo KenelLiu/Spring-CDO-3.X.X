@@ -1,0 +1,2 @@
+ShardedRedisPool.init();	
+RedisPool.init();

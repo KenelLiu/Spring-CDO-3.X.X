@@ -1,0 +1,11 @@
+#Fri Mar 11 12:10:59 CST 2022
+com.cdoframework.cdolib.servicebus.xsd.ServicePlugin=com.cdoframework.cdolib.servicebus.xsd.descriptors.ServicePluginDescriptor
+com.cdoframework.cdolib.servicebus.xsd.DataGroup=com.cdoframework.cdolib.servicebus.xsd.descriptors.DataGroupDescriptor
+com.cdoframework.cdolib.servicebus.xsd.TransService=com.cdoframework.cdolib.servicebus.xsd.descriptors.TransServiceDescriptor
+com.cdoframework.cdolib.servicebus.xsd.ConnectionPool=com.cdoframework.cdolib.servicebus.xsd.descriptors.ConnectionPoolDescriptor
+com.cdoframework.cdolib.servicebus.xsd.ServiceBus=com.cdoframework.cdolib.servicebus.xsd.descriptors.ServiceBusDescriptor
+com.cdoframework.cdolib.servicebus.xsd.User=com.cdoframework.cdolib.servicebus.xsd.descriptors.UserDescriptor
+com.cdoframework.cdolib.servicebus.xsd.Property=com.cdoframework.cdolib.servicebus.xsd.descriptors.PropertyDescriptor
+com.cdoframework.cdolib.servicebus.xsd.Database=com.cdoframework.cdolib.servicebus.xsd.descriptors.DatabaseDescriptor
+com.cdoframework.cdolib.servicebus.xsd.ServiceConfig=com.cdoframework.cdolib.servicebus.xsd.descriptors.ServiceConfigDescriptor
+com.cdoframework.cdolib.servicebus.xsd.DataService=com.cdoframework.cdolib.servicebus.xsd.descriptors.DataServiceDescriptor

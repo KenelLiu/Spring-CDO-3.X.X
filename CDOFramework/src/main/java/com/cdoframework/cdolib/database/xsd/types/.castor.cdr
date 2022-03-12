@@ -1,0 +1,7 @@
+#Mon Oct 18 20:53:05 GMT+08:00 2021
+com.cdoframework.cdolib.database.xsd.types.IfOperatorType=com.cdoframework.cdolib.database.xsd.types.descriptors.IfOperatorTypeDescriptor
+com.cdoframework.cdolib.database.xsd.types.IfTypeType=com.cdoframework.cdolib.database.xsd.types.descriptors.IfTypeTypeDescriptor
+com.cdoframework.cdolib.database.xsd.types.SetVarTypeType=com.cdoframework.cdolib.database.xsd.types.descriptors.SetVarTypeTypeDescriptor
+com.cdoframework.cdolib.database.xsd.types.SQLIfTypeType=com.cdoframework.cdolib.database.xsd.types.descriptors.SQLIfTypeTypeDescriptor
+com.cdoframework.cdolib.database.xsd.types.SQLIfOperatorType=com.cdoframework.cdolib.database.xsd.types.descriptors.SQLIfOperatorTypeDescriptor
+com.cdoframework.cdolib.database.xsd.types.SQLTransPropagationType=com.cdoframework.cdolib.database.xsd.types.descriptors.SQLTransPropagationTypeDescriptor

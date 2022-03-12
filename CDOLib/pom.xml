@@ -1,0 +1,72 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>cdo</groupId>
+		<artifactId>spring-cdo-parent</artifactId>
+		<version>3.0.0</version>
+	</parent>
+		
+	<artifactId>spring-cdoLib</artifactId>
+	<packaging>jar</packaging>
+	<name>spring-cdoLib</name>
+	<url>http://maven.apache.org</url>
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>	    		
+	</properties>
+	<dependencies>
+		<dependency>
+		    <groupId>org.json</groupId>
+		    <artifactId>json</artifactId>
+		</dependency>					
+		<dependency>
+		  <groupId>org.apache.avro</groupId>
+		  <artifactId>avro</artifactId>
+            <exclusions>   
+            	<exclusion>
+				      <groupId>com.thoughtworks.paranamer</groupId>
+				      <artifactId>paranamer</artifactId>        	
+            	</exclusion>               	  
+            	<exclusion>
+				      <groupId>org.xerial.snappy</groupId>
+				      <artifactId>snappy-java</artifactId>         	
+            	</exclusion>
+            	<exclusion>
+			      <groupId>org.tukaani</groupId>
+			      <artifactId>xz</artifactId>           	
+            	</exclusion>  
+            	<exclusion>
+				  <groupId>org.apache.commons</groupId>
+				   <artifactId>commons-compress</artifactId>        	
+            	</exclusion>            	
+            	<exclusion>
+            	    <groupId>io.netty</groupId>
+    				<artifactId>netty</artifactId>
+            	</exclusion> 
+            	<exclusion>
+				    <groupId>org.slf4j</groupId>
+				    <artifactId>slf4j-api</artifactId>            	
+            	</exclusion>             	     	
+            </exclusions>		  
+		</dependency>	
+        <!--google protobuf  -->        
+		<dependency>
+			<groupId>com.google.protobuf</groupId>
+			<artifactId>protobuf-java</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jcl</artifactId>			
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-log4j2</artifactId>		    
+		</dependency>				
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>	
+			<scope>test</scope>		    
+		</dependency>		
+	</dependencies>	
+</project>

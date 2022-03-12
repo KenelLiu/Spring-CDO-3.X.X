@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DataService xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="../../../../DataService3.xsd">
+   <!--修改数据 -->
+   <SQLTrans  TransName="getAllAuthKey" DataGroupId="writeAPI">
+   		<SelectRecordSet OutputId="{cdosData}">
+   			<OutputSQL>
+   				SELECT appKey,appSecret,client FROM T_ID_AuthKey
+   			</OutputSQL> 
+   		</SelectRecordSet>		   			 		   		   				
+		<OnException>
+			<Return Info="Return.Error" Code="-1" Text="保存数据发生错误！"></Return>
+		</OnException>
+		<Return Info="OK" Code="0" Text="OK">
+			<ReturnItem FieldId="{cdosData}" ValueId="{cdosData}"/>
+		</Return>		
+	</SQLTrans>		
+</DataService>

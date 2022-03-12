@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DataService xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="../../../../DataService3.xsd">
+   <!-- 查询数据 -->
+   <SQLTrans  TransName="getDataByDay" DataGroupId="writeAPI">
+   		<SelectField OutputId="{lastTime}">
+   			<OutputSQL>
+   				SELECT MAX(modifyTime) as lastTime FROM (
+				SELECT modifyTime FROM T_ST_Common
+				UNION ALL
+				SELECT modifyTime FROM T_ST_City
+				UNION ALL
+				SELECT modifyTime FROM T_ST_Category)T
+   			</OutputSQL>
+   		</SelectField>
+   		<SelectRecord OutputId="{cdoData}">
+   			<OutputSQL>
+   				SELECT 
+					sysAppQty,buildQty,repairQty,urbanCap,startTime,
+					uplinkUnitQty,registerQty,mobileRegisterQty,coreRoomQty,convergeRoomQty,
+					safeEqptQty,netEqptQty,
+					urbanTerminalQty,areaTerminalQty,urbanCoreCap,urbanConvergeCap,urbanInCap,
+					areaCoreCap,areaConvergeCap,areaInCap,specUrbanNodeQty,specAreaNodeQty,
+					mergeSysQty,unicomBandwidth
+				FROM T_ST_Common 				
+   			</OutputSQL>
+   		</SelectRecord>
+   		<!-- 光纤皮长 -->
+   		<SelectRecordSet OutputId="{cdosFiber}">
+   			<OutputSQL>
+   				  SELECT code,name,opticalFiberLen
+   				  FROM T_ST_City ORDER BY opticalFiberLen desc
+   			</OutputSQL>
+   		</SelectRecordSet>	
+   		<!-- 带宽情况 -->
+   		<SelectRecordSet OutputId="{cdosBandwidth}">
+   			<OutputSQL>
+   				  SELECT  CONVERT(IFNULL(SUM(qty),0),SIGNED) AS nodeQty,type
+				  FROM T_ST_Category  GROUP BY type
+   			</OutputSQL>
+   		</SelectRecordSet>
+   		<!-- 各行业带宽分布情况 -->	
+   		<SelectRecordSet OutputId="{cdosCateBandwidth}">
+   			<OutputSQL>
+					SELECT  cateName ,CONVERT(IFNULL(SUM(qty),0),SIGNED) as qty 
+					FROM T_ST_Category  GROUP  BY cateName
+   			</OutputSQL>
+   		</SelectRecordSet>
+   		<!--接入节点数 -->
+   		<SelectRecordSet OutputId="{cdosNode}">
+   			<OutputSQL>
+   				  SELECT code,name,nodeQty
+   				  FROM T_ST_City ORDER BY nodeQty desc 
+   			</OutputSQL>
+   		</SelectRecordSet>	   		   			   		   		   				
+		<OnException>
+			<Return Info="Return.Error" Code="-1" Text="查询出现错误！"></Return>
+		</OnException>
+		<Return Info="OK" Code="0" Text="OK">
+			<ReturnItem FieldId="{cdoData}" ValueId="{cdoData}" />	
+			<ReturnItem FieldId="{cdosFiber}" ValueId="{cdosFiber}"/>	
+			<ReturnItem FieldId="{cdosBandwidth}" ValueId="{cdosBandwidth}"/>
+			<ReturnItem FieldId="{cdosCateBandwidth}" ValueId="{cdosCateBandwidth}"/>	
+			<ReturnItem FieldId="{cdosNode}" ValueId="{cdosNode}"/>
+			<ReturnItem FieldId="{lastTime}" ValueId="{lastTime}"/>
+		</Return>
+		
+	</SQLTrans>		
+</DataService>

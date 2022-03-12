@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DataService xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="../../../../../DataService3.xsd">
+   <!-- 查询[设备表/子设备表]数据 -->
+   <SQLTrans  TransName="getListNMSResource" DataGroupId="writeActiviti">
+   		<SelectField OutputId="{nCount}">
+   			<OutputSQL>
+   				SELECT count(*) as nCount FROM nms_managed_resource
+   			</OutputSQL>
+   		</SelectField>
+   		<SelectRecordSet OutputId="{cdosData}">
+   			<OutputSQL>
+				 SELECT resourceId,resourceName,ipAddress,resourceCategory,resourceType,
+					resourceVersion,managedstatus,resourceAlias,createTime,parentResourceId,
+					fenZhongXin,jieDaoZhan,seqNo,manufacturer,modelNum,createTime
+				 FROM 
+					nms_managed_resource 
+				 ORDER BY createTime DESC,resourceId LIMIT {nStartIndex},{nPageSize}	  			
+   			</OutputSQL>
+   		</SelectRecordSet>   		   			   		   		   				
+		<OnException>
+			<Return Info="Return.Error" Code="-1" Text="查询出现错误！"></Return>
+		</OnException>
+		<Return Info="OK" Code="0" Text="OK">
+			<ReturnItem FieldId="{nCount}" ValueId="{nCount}" />	
+			<ReturnItem FieldId="{cdosData}" ValueId="{cdosData}"/>	
+		</Return>		
+	</SQLTrans>	
+	
+   <!-- 查询[设备状态表]数据 -->
+   <SQLTrans  TransName="getListDeviceState" DataGroupId="writeActiviti">
+   		<SelectField OutputId="{nCount}">
+   			<OutputSQL>
+   				SELECT count(*) as nCount FROM lt_devicerawdatatable WHERE fetchTime>(UNIX_TIMESTAMP(NOW())-604800)*1000
+   			</OutputSQL>
+   		</SelectField>
+   		<SelectRecordSet OutputId="{cdosData}">
+   			<OutputSQL>
+				 SELECT deviceId,fetchTime,connectStatus,delayTimeSize,discardRateSize,
+					cpuUsageNo1 as cpuUsage,memoryUsageNo1 as memoryUsage
+				 FROM 
+					lt_devicerawdatatable
+				 WHERE 	fetchTime> (UNIX_TIMESTAMP(NOW())-604800)*1000
+				 ORDER BY fetchTime desc,deviceId  LIMIT {nStartIndex},{nPageSize}	  			
+   			</OutputSQL>
+   		</SelectRecordSet>   		   			   		   		   				
+		<OnException>
+			<Return Info="Return.Error" Code="-1" Text="查询出现错误！"></Return>
+		</OnException>
+		<Return Info="OK" Code="0" Text="OK">
+			<ReturnItem FieldId="{nCount}" ValueId="{nCount}" />	
+			<ReturnItem FieldId="{cdosData}" ValueId="{cdosData}"/>	
+		</Return>		
+	</SQLTrans>	
+		
+   <!-- 查询[设备端口流量]数据 -->
+   <SQLTrans  TransName="getListLTPrdOIdFlow" DataGroupId="writeActiviti">
+   		<SelectField OutputId="{nCount}">
+   			<OutputSQL>
+   				SELECT count(*) as nCount FROM
+   				 ( SELECT portId,fetchTime,portStatus,inFlowSpeed,outFlowSpeed,oId,linkId FROM lt_prd_oId_5mins WHERE fetchTime > (UNIX_TIMESTAMP(NOW())-900)*1000  GROUP BY oId,linkId 
+   				    )t
+   			</OutputSQL>
+   		</SelectField>
+   		<SelectRecordSet OutputId="{cdosData}">
+   			<OutputSQL>
+				SELECT portId,fetchTime,portStatus,inFlowSpeed,outFlowSpeed,oId,linkId 
+				FROM lt_prd_oId_5mins 
+				WHERE fetchTime > (UNIX_TIMESTAMP(NOW())-900)*1000 
+				GROUP BY oId,linkId  ORDER BY fetchTime desc,portId 
+   				LIMIT {nStartIndex},{nPageSize}	  			
+   			</OutputSQL>
+   		</SelectRecordSet>   		   			   		   		   				
+		<OnException>
+			<Return Info="Return.Error" Code="-1" Text="查询出现错误！"></Return>
+		</OnException>
+		<Return Info="OK" Code="0" Text="OK">
+			<ReturnItem FieldId="{nCount}" ValueId="{nCount}" />	
+			<ReturnItem FieldId="{cdosData}" ValueId="{cdosData}"/>	
+		</Return>		
+	</SQLTrans>	
+	
+   <!-- 查询[告警]数据 -->
+   <SQLTrans  TransName="getListNMSAlarm" DataGroupId="writeActiviti">
+   		<SelectField OutputId="{nCount}">
+   			<OutputSQL>
+   				SELECT count(*) as nCount FROM nms_currentalarm
+   			</OutputSQL>
+   		</SelectField>
+   		<SelectRecordSet OutputId="{cdosData}">
+   			<OutputSQL>
+					SELECT 
+						id,ackTime,ackUser,clearTime,raiseTime,
+						severity,source,clearUser,alarmName,cause,
+						state,resourceId,resourceName,category,parentResourceId
+					FROM
+						nms_currentalarm 
+   				    ORDER BY raiseTime desc,id
+   				    LIMIT {nStartIndex},{nPageSize}	  			
+   			</OutputSQL>
+   		</SelectRecordSet>   		   			   		   		   				
+		<OnException>
+			<Return Info="Return.Error" Code="-1" Text="查询出现错误！"></Return>
+		</OnException>
+		<Return Info="OK" Code="0" Text="OK">
+			<ReturnItem FieldId="{nCount}" ValueId="{nCount}" />	
+			<ReturnItem FieldId="{cdosData}" ValueId="{cdosData}"/>	
+		</Return>		
+	</SQLTrans>	
+	
+   <SQLTrans  TransName="getListNodeDevice" DataGroupId="writeActiviti">
+   		<SelectField OutputId="{nCount}">
+   			<OutputSQL>
+   				SELECT count(*) as nCount FROM V_NodeAddress
+   			</OutputSQL>
+   		</SelectField>
+   		<SelectRecordSet OutputId="{cdosData}">
+   			<OutputSQL>
+					SELECT v.id,v.oId,company,newCompany,orgId,bandwidth,
+						   line.name AS lineName,address,v.`level`,finishTime,
+						   linkId,deviceId,CNMAddress,region,subCenter,
+						   street,streetAddress,`device`,port,uplinkPort,
+						   linkName,v.createTime,v.createUser, v.modifyTime,v.modifyUser
+					FROM
+						V_NodeAddress v
+						LEFT JOIN T_ID_ORG line ON (v.line=line.id)						
+   				    ORDER BY v.oId,v.id,v.linkId
+   				    LIMIT {nStartIndex},{nPageSize}	  			
+   			</OutputSQL>
+   		</SelectRecordSet>   		   			   		   		   				
+		<OnException>
+			<Return Info="Return.Error" Code="-1" Text="查询出现错误！"></Return>
+		</OnException>
+		<Return Info="OK" Code="0" Text="OK">
+			<ReturnItem FieldId="{nCount}" ValueId="{nCount}" />	
+			<ReturnItem FieldId="{cdosData}" ValueId="{cdosData}"/>	
+		</Return>		
+	</SQLTrans>	
+	
+   <SQLTrans  TransName="getNodeDeviceDetail" DataGroupId="writeActiviti">
+   		<SelectRecordSet OutputId="{cdosDetail}">
+   			<OutputSQL>
+					SELECT detail.oId,detail.id,detail.deviceId,detailId,interNetAddress,
+						  userNetAddress,vlan,`type`,monitorPort,sort
+					FROM
+						V_All_NodeDetail detail, 	  			
+   			</OutputSQL>
+   			<OutputField>{tblId}</OutputField>
+   			<OutputSQL>
+   					  WHERE 
+   					  		detail.oId=tblId.oId
+   					  	AND	detail.id=tblId.id
+   					  	AND detail.deviceId=tblId.deviceId
+   					  ORDER BY detail.oId,detail.id,detail.deviceId,detail.sort 	
+   			</OutputSQL>
+   		</SelectRecordSet>   		   			   		   		   				
+		<OnException>
+			<Return Info="Return.Error" Code="-1" Text="查询出现错误！"></Return>
+		</OnException>
+		<Return Info="OK" Code="0" Text="OK">				
+			<ReturnItem FieldId="{cdosDetail}" ValueId="{cdosDetail}"/>	
+		</Return>		
+	</SQLTrans>		
+		
+</DataService>

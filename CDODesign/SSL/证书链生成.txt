@@ -1,0 +1,55 @@
+ 安全SSL通信双方如果都使用自签名证书，则需要把对方的证书加入到自己的信任证书库，如果是常见的C/S结构，
+ 则需要在服务器端信任证书中加入所有的客户端证书，管理非常不方便。 可以使用证书链来实现，以简化管理，增加新的客户端无需修改服务器信任证书库。
+
+1. http://sourceforge.net/projects/xca，下载证书生成工具，目前最新版为0.6.3
+
+2. 生成Root CA私钥与证书： 
+2.1 先生成RootCA私钥-->使用私钥生成CSR-->生成自签名根证书。用来给二级CA证书签名。
+
+3. 生成二级CA 私钥与证书：（假如有两个二级CA， 分别负责管理服务器端和客户端证书） 
+3.1 先生成ServerCA私钥-->使用私钥生成CSR-->使用根证书签名生成二级证书。用来给服务器证书签名。 
+3.2 先生成ClientCA私钥-->使用私钥生成CSR-->使用根证书签名生成二级证书。用来给客户端证书签名。
+
+4. 生成服务器端与客户端的私钥与证书： 
+4.1 先生成ServerA私钥-->使用私钥生成CSR-->使用ServerCA证书签名生成三级证书。 
+4.2 先生成ClientA私钥-->使用私钥生成CSR-->使用ClientCA证书签名生成三级证书。 
+4.3 先生成ClientB私钥-->使用私钥生成CSR-->使用ClientCA证书签名生成三级证书
+。。。。可以生成N个客户端证书
+
+证书结构： 
+RootCA 
+| 
+|-------ServerCA 
+|          |
+|          |--------ServerA 
+| 
+|-------ClientCA 
+           |
+           |--------ClientA 
+           | 
+           |--------ClientB 
+           | 
+           |--------... 
+           |
+
+5. 导出RootCA的根证书、服务器端和客户端的私钥和证书。 
+导出时都使用pem格式。 
+RootCA.pem-------根证书（PEM ） 
+ServerA.pem------服务器端证书（PEM with Certificate chain） 
+ClientA.pem------客户端证书（PEM with Certificate chain） 
+ClientB.pem------客户端证书（PEM with Certificate chain） 
+ServerAKey.pem------服务器端私钥（PEM ） 
+ClientAKey.pem------客户端私钥（PEM ） 
+ClientBKey.pem------客户端私钥（PEM ）
+
+6.下面是最重要的一步：生成需要使用的JKS文件。keytool工具不能导入私钥，需要利用到weblogic 提供的一个工具，需要把weblogic.jar加到CLASSPATH。 
+6.1 生成服务器和客户端的信任证书库： 
+keytool -import -alias rootca -file RootCA.pem -keystore trust.jks 
+6.2 生成服务器端身份密钥库： 
+java utils.ImportPrivateKey -keystore servera.jks -storepass 123456 -storetype JKS -keypass 123456 -alias servera -certfile ServerA.pem -keyfile ServerAKey.pem 
+6.3 生成客户端身份密钥库： 
+java utils.ImportPrivateKey -keystore clienta.jks -storepass 123456 -storetype JKS -keypass 123456 -alias clienta -certfile ClientA.pem -keyfile ClientAKey.pem ...生成其他客户端身份密钥库
+
+7. keytool -list -v -keystore clienta.jks (servera.jks) 可以查看其中的证书链关系。
+
+至此完成所有步骤，可以将JKS应用于SSL SOCKET 连接或 WebLogic 的 https 连接中。

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PluginsConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../Design/PluginsConfig.xsd" >	      	
+   	<PluginXMLResource>com/liantong/service/config/Plugin.xml</PluginXMLResource>   
+   	<PluginXMLResource>com/liantong/service/identity/Plugin.xml</PluginXMLResource>
+</PluginsConfig>

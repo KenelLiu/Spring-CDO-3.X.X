@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DataService xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="../../../../DataService3.xsd">
+   <!-- 查询数据 -->
+   <SQLTrans  TransName="getDataByMonth" DataGroupId="writeAPI">
+   		<SelectField OutputId="{lastTime}">
+   			<OutputSQL>
+			SELECT MAX(modifyTime) AS lastTime FROM (
+			SELECT modifyTime FROM T_ST_RunState
+			UNION ALL
+			SELECT modifyTime FROM T_ST_EmphasisApp
+			UNION ALL
+			SELECT modifyTime FROM T_ST_Safe
+			UNION ALL
+			SELECT modifyTime FROM  T_ST_BreakDown
+			)T
+   			</OutputSQL>
+   		</SelectField>   		
+   		<!-- 运行态势 -->	
+   		<SelectRecord OutputId="{cdoRunState}">
+   			<OutputSQL>
+					SELECT  totalBandWidth,
+							IF(totalInFlowSpeed4>=totalOutFlowSpeed4,totalInFlowSpeed4,totalOutFlowSpeed4) AS totalFlowSpeed4
+					FROM T_ST_RunState				
+   			</OutputSQL>
+   		</SelectRecord>	
+   		<!-- 重点应用 -->
+   		<SelectRecordSet OutputId="{cdosEmphasisApp}">
+   			<OutputSQL>
+   				SELECT hour,categoryId,name,qty
+				FROM T_ST_EmphasisApp 
+				ORDER BY categoryId,hour
+   			</OutputSQL>
+   		</SelectRecordSet>
+   		<!-- 安全态势 -->
+   		<SelectField OutputId="{totalAttackQty}">
+   			<OutputSQL>
+   				SELECT CONVERT(IFNULL(SUM(attackQty),0),SIGNED) AS totalAttackQty
+   				FROM   T_ST_Safe
+   			</OutputSQL>
+   		</SelectField>	
+   		<SelectField OutputId="{totalAttackType}">
+   			<OutputSQL>
+   				SELECT COUNT(*) as nCount FROM
+ 					(SELECT attackType FROM T_ST_Safe GROUP BY attackType)tmp
+   			</OutputSQL>
+   		</SelectField>   	
+   		<SelectRecordSet OutputId="{cdosReceiveAttackRank}">
+   			<OutputSQL>
+   				SELECT name,attackQty FROM T_ST_Safe WHERE type=2 ORDER BY attackQty DESC LIMIT 3
+   			</OutputSQL>
+   		</SelectRecordSet> 
+   		<SelectRecordSet OutputId="{cdosAttackRank}">
+   			<OutputSQL>
+   				SELECT name,attackQty FROM T_ST_Safe WHERE type=1 ORDER BY attackQty DESC LIMIT 3
+   			</OutputSQL>
+   		</SelectRecordSet> 
+   		<SelectRecordSet OutputId="{cdosAttackTypeRank}">
+   			<OutputSQL>
+   				 SELECT attackType,CONVERT(IFNULL(SUM(attackQty),0),SIGNED) AS attackQty FROM T_ST_Safe GROUP BY attackType 
+ 				ORDER BY attackQty DESC LIMIT 3
+   			</OutputSQL>
+   		</SelectRecordSet>    		 
+   		 <!-- 故障情况 -->    	
+   		 <SelectRecord OutputId="{cdoBreakDown}">
+   		 	<OutputSQL>
+   		 	SELECT 
+				breakDownQty,seasonBuildQty,userRepairQty,govRepairQty
+			FROM T_ST_BreakDown
+   		 	</OutputSQL>
+   		 </SelectRecord>	  		   		  		   						
+		<OnException>
+			<Return Info="Return.Error" Code="-1" Text="查询出现错误！"></Return>
+		</OnException>
+		<Return Info="OK" Code="0" Text="OK">
+			<ReturnItem FieldId="{cdoRunState}" ValueId="{cdoRunState}" />
+			<ReturnItem FieldId="{cdosEmphasisApp}" ValueId="{cdosEmphasisApp}" />
+			<ReturnItem FieldId="{totalAttackQty}" ValueId="{totalAttackQty}" />	
+			<ReturnItem FieldId="{totalAttackType}" ValueId="{totalAttackType}" />	
+			<ReturnItem FieldId="{cdosReceiveAttackRank}" ValueId="{cdosReceiveAttackRank}"/>	
+			<ReturnItem FieldId="{cdosAttackRank}" ValueId="{cdosAttackRank}" />	
+			<ReturnItem FieldId="{cdosAttackTypeRank}" ValueId="{cdosAttackTypeRank}" />
+			<ReturnItem FieldId="{cdoBreakDown}" ValueId="{cdoBreakDown}"/>		
+			<ReturnItem FieldId="{lastTime}" ValueId="{lastTime}"/>					
+		</Return>
+	</SQLTrans>		
+</DataService>

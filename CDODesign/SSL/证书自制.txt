@@ -1,0 +1,37 @@
+CA证书
+	1.创建私钥
+		openssl genrsa -out ca-key.pem 1024
+	
+	2.创建csr证书请求	
+  		openssl req -new -key ca-key.pem -out ca-req.csr -subj "/C=CN/ST=BJ/L=BJ/O=fish/OU=fish/CN=CA"
+  
+	3.生成crt证书（执行以下命令生成CA证书）  
+  		openssl x509 -req -in ca-req.csr -out ca-cert.pem -signkey ca-key.pem -days 3650
+  
+服务器端证书
+	1.创建服务器端私钥
+		openssl genrsa -out server-key.pem 1024 
+		 
+	2.创建csr证书,其中输入的信息中最重要的为 CN，这里输入的域名即为我们要使用https访问的域名。同时也可以使用泛域名如.webkaka.com来生成所有二级域名可用的网站证书。
+		openssl req -new -key server-key.pem -out server-req.csr  -subj "/C=CN/ST=BJ/L=BJ/O=fish/OU=fish/CN=*.fish-test.com"
+	
+	3.生成crt证书 ,执行以下命令生成服务器端证书	
+		openssl x509 -req -in server-req.csr -out server-cert.pem  -CA ca-cert.pem -CAkey ca-key.pem -CAcreateserial -days 3650
+	
+	4.确认证书
+		openssl verify -CAfile ca-cert.pem  server-cert.pem
+		
+ 有了【服务器端证书】之后就可以配置单向认证访问	,如果需要双向认证，还需要【客户端证书】
+
+客户端证书 
+	1.创建客户端私钥
+		openssl genrsa -out client-key.pem 1024
+	
+	2.创建csr证书,这里的CN可以是客户端的IP信息
+		openssl req -new -out client-req.csr -key client-key.pem -subj "/C=CN/ST=BJ/L=BJ/O=fish/OU=fish/CN=dong"	
+ 	
+ 	3.生成crt证书,执行以下命令生成客户端证书
+ 		openssl x509 -req -in client-req.csr -out client-cert.pem -CA ca-cert.pem -CAkey ca-key.pem -CAcreateserial -days 3650
+	
+	4.确认证书		
+		openssl verify -CAfile ca-cert.pem client-cert.pem

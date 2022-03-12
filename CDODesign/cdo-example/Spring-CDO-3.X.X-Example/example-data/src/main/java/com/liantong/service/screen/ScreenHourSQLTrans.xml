@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DataService xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="../../../../DataService3.xsd">
+   <!-- 查询数据 -->
+   <SQLTrans  TransName="getDataByHour" DataGroupId="writeAPI">
+   		<SelectField OutputId="{lastTime}">
+   			<OutputSQL>
+				SELECT MAX(modifyTime) AS lastTime FROM (
+				SELECT modifyTime FROM T_ST_Net
+				UNION ALL
+				SELECT modifyTime FROM T_ST_Top
+				UNION ALL
+				SELECT modifyTime FROM T_ST_CoreNode)T
+   			</OutputSQL>
+   		</SelectField>   		
+   		<SelectRecord OutputId="{cdoNet}">
+   			<OutputSQL>
+   				SELECT 
+					IF(totalInFlowSpeed>=totalOutFlowSpeed,totalInFlowSpeed,totalOutFlowSpeed) AS totalFlowSpeed,
+					utilRate70NodeQty,utilRate50NodeQty,utilRate0NodeQty,coreUtilRate,breakDownMins
+				FROM T_ST_Net	
+   			</OutputSQL>
+   		</SelectRecord>	
+   		<SelectRecordSet OutputId="{cdosTop}">
+   			<OutputSQL>				
+				SELECT name,bandwidth,
+					  IF(inFlowSpeed>=outFlowSpeed,inFlowSpeed,outFlowSpeed) AS flowSpeed				
+				FROM T_ST_Top 
+				ORDER BY flowSpeed DESC				
+   			</OutputSQL>
+   		</SelectRecordSet>	
+   		<SelectRecordSet OutputId="{cdosNode}">
+   			<OutputSQL>   			
+				SELECT 
+					name,state,bandwidth,IF(inFlowSpeed>=outFlowSpeed,inFlowSpeed,outFlowSpeed) AS flowSpeed
+				FROM `T_ST_CoreNode`   			
+   			</OutputSQL>
+   		</SelectRecordSet>					
+		<OnException>
+			<Return Info="Return.Error" Code="-1" Text="查询出现错误！"></Return>
+		</OnException>
+		<Return Info="OK" Code="0" Text="OK">
+			<ReturnItem FieldId="{cdoNet}" ValueId="{cdoNet}" />	
+			<ReturnItem FieldId="{cdosTop}" ValueId="{cdosTop}" />	
+			<ReturnItem FieldId="{cdosNode}" ValueId="{cdosNode}"/>	
+			<ReturnItem FieldId="{lastTime}" ValueId="{lastTime}"/>	
+		</Return>
+	</SQLTrans>		
+</DataService>
