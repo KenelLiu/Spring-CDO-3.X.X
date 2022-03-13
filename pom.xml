@@ -38,7 +38,8 @@
 		<module>CDOUtil</module>
 		<module>CDOFramework</module>
 		<module>CDOWeb</module>	
-		<module>CDORedis</module>			
+		<module>CDORedis</module>
+		<module>CDOXmlMapper</module>
 	</modules>
 	
 	<dependencyManagement>

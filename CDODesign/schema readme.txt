@@ -9,7 +9,7 @@
    PluginsConfig.xsd   定义了使用插件的配置
 6  使用高版本castor1.4.1及dbcp2.6，仅JDK1.8+ 才能支持
 
-
+7.PluginsConfig 可独立配置xmlMapper,与spring整合，类似myibatis作用。
 
                                                                                         
                                                                                        

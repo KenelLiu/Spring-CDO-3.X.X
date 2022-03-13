@@ -126,46 +126,4 @@
 			<xs:attribute name="ClassPath" type="xs:string" use="required"/>
 		</xs:complexType>
 	</xs:element>
-	<xs:element name="ServicePlugin">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="DataGroup" minOccurs="0" maxOccurs="unbounded"/>
-				<xs:element name="ServiceConfig" maxOccurs="unbounded">
-					<xs:complexType>
-						<xs:attribute name="Id" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:string">
-									<xs:pattern value="(([a-z]|[A-Z])([a-z]|[A-Z]|[0-9])*)*"/>
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="DataService" minOccurs="0" maxOccurs="unbounded">
-					<xs:complexType>
-						<xs:attribute name="Id" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:string">
-									<xs:pattern value="([a-z]|[A-Z])([a-z]|[A-Z]|[0-9])*"/>
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="Resource" type="xs:string" use="required"/>
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="TransService" minOccurs="0" maxOccurs="unbounded">
-					<xs:complexType>
-						<xs:attribute name="Id" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:string">
-									<xs:pattern value="([a-z]|[A-Z])([a-z]|[A-Z]|[0-9])*"/>
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="ClassPath" type="xs:string" use="required"/>
-					</xs:complexType>
-				</xs:element>
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
 </xs:schema>

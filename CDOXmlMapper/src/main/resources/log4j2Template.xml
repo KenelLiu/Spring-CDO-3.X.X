@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/2002/xmlspec/dtd/2.10/xmlspec.dtd">
+
+<!-- status : 这个用于设置log4j2自身内部的信息输出,可以不设置,当设置成trace时,会看到log4j2内部各种详细输出 monitorInterval 
+    : Log4j能够自动检测修改配置文件和重新配置本身, 设置间隔秒数。 注：本配置文件的目标是将不同级别的日志输出到不同文件，最大2MB一个文件， 
+    文件数据达到最大值时，旧数据会被压缩并放进指定文件夹 -->
+<Configuration status="warn" monitorInterval="600">
+
+    <Properties> <!-- 配置日志文件输出目录，此配置将日志输出到tomcat根目录下的指定文件夹 -->
+        <Property name="LOG_HOME">d:/logs</Property>
+        <Property name="prjName">activitiAdmin</Property>
+    </Properties>
+
+    <Appenders>
+
+        <!-- 优先级从高到低分别是 OFF、FATAL、ERROR、WARN、INFO、DEBUG、ALL -->
+        <!-- 单词解释： Match：匹配 DENY：拒绝 Mismatch：不匹配 ACCEPT：接受 -->
+        <!-- DENY，日志将立即被抛弃不再经过其他过滤器； NEUTRAL，有序列表里的下个过滤器过接着处理日志； ACCEPT，日志会被立即处理，不再经过剩余过滤器。 -->
+        <!--输出日志的格式
+         %d{yyyy-MM-dd HH:mm:ss, SSS} : 日志生产时间
+         %p : 日志输出格式
+         %c : logger的名称 
+         %m : 日志内容，即 logger.info("message") 
+         %n : 换行符 
+         %C : Java类名
+         %L : 日志输出所在行数 
+         %M : 日志输出所在方法名 
+         hostName : 本地机器名 
+         hostAddress : 本地ip地址 -->
+
+        <!--这个输出控制台的配置，这里输出除了warn和error级别的信息到System.out -->
+        <Console name="console_out_appender" target="SYSTEM_OUT">
+            <!-- 控制台只输出level及以上级别的信息(onMatch),其他的直接拒绝(onMismatch) . -->
+            <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY" />
+            <!-- 输出日志的格式 -->
+            <PatternLayout pattern="%5p [%t] %d{yyyy-MM-dd HH:mm:ss} (%F:%L) %m%n" />
+        </Console>
+		<!--append="false" :根据其下日志策略,每次清空文件重新输入日志,可用于测试-->
+        <File name="log" fileName="${LOG_HOME}/${prjName}.log" append="false">
+             <PatternLayout>
+                <pattern>%5p [%t] %d{yyyy-MM-dd HH:mm:ss} (%F:%L) %m%n</pattern>
+            </PatternLayout>
+			<ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY" />
+        </File>	
+        <!-- SMTP :邮件发送日志-
+        <SMTP name="Mail" subject="****SaaS系统正式版异常信息" to="message@message.info" from="message@lengjing.info" smtpUsername="message@message.info" smtpPassword="LENG****1234" smtpHost="mail.lengjing.info" smtpDebug="false" smtpPort="25" bufferSize="10">
+            <PatternLayout pattern="[%-5p]:%d{YYYY-MM-dd HH:mm:ss} [%t] %c{1}:%L - %msg%n" />
+        </SMTP>
+        -->        	
+        <!--  INFO级别日志  -->
+        <RollingFile name="info_appender" immediateFlush="true" fileName="${LOG_HOME}/${prjName}_info.log" 
+        			filePattern="${LOG_HOME}/info/${prjName}_info - %d{yyyy-MM-dd HH_mm_ss}.log.gz">
+            <PatternLayout>
+                <pattern>%5p [%t] %d{yyyy-MM-dd HH:mm:ss} (%F:%L) %m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="50MB" />
+                <!-- TimeBasedTriggeringPolicy :时间滚动策略,默认0点小时产生新的文件,interval="12" : 自定义文件滚动时间间隔,每隔6小时产生新文件, modulate="true" : 产生文件是否以0点偏移时间,即12点,0点-->
+                <TimeBasedTriggeringPolicy interval="12" modulate="true"/>
+            </Policies>
+            <Filters>
+                <ThresholdFilter level="warn" onMatch="DENY" onMismatch="NEUTRAL" />
+                <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY" />
+            </Filters>
+        </RollingFile>
+
+        <!-- WARN级别日志 -->
+        <RollingFile name="warn_appender" immediateFlush="true" fileName="${LOG_HOME}/${prjName}_warn.log" 
+        	filePattern="${LOG_HOME}/warn/${prjName}_warn - %d{yyyy-MM-dd HH_mm_ss}.log.gz">
+            <PatternLayout>
+                <pattern>%5p [%t] %d{yyyy-MM-dd HH:mm:ss} (%F:%L) %m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="30MB" />
+                <TimeBasedTriggeringPolicy interval="24" modulate="true"/>
+            </Policies>
+            <Filters>
+                <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL" />
+                <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY" />
+            </Filters>
+        </RollingFile>
+
+        <!-- ERROR级别日志 -->
+        <RollingFile name="error_appender" immediateFlush="true" fileName="${LOG_HOME}/${prjName}_error.log" 
+        			filePattern="${LOG_HOME}/error/${prjName}_error - %d{yyyy-MM-dd HH_mm_ss}.log.gz">
+            <PatternLayout>
+                <pattern>%5p [%t] %d{yyyy-MM-dd HH:mm:ss} (%F:%L) %m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10MB" />
+                <TimeBasedTriggeringPolicy interval="24" modulate="true"/>
+            </Policies>
+            <Filters>
+                <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY" />
+                <TimeBasedTriggeringPolicy interval="24" modulate="true"/>
+            </Filters>
+        </RollingFile>		
+    </Appenders>
+
+    <Logs>
+        <!-- 配置日志的根节点 -->
+        <!-- 定义logger，只有定义了logger并引入了appender，appender才会生效 -->
+        <root level="DEBUG">
+            <AppenderRef ref="console_out_appender" />            
+            <AppenderRef ref="info_appender" />
+            <AppenderRef ref="warn_appender" />
+            <AppenderRef ref="error_appender" />
+			<AppenderRef ref="log" />
+			
+        </root>
+        <!-- 第三方日志系统 -->
+		<logger name="io.netty" level="INFO"></logger>
+        <logger name="org.apache" level="INFO"></logger>
+        <logger name="org.quartz" level="INFO"></logger>
+        <logger name="org.exolab" level="INFO"></logger>
+        <logger name="o.quartz" level="INFO"></logger>
+        <logger name="c.o.x" level="INFO"></logger>
+        <logger name="o.e.c" level="INFO"></logger>
+    </Logs>
+
+</Configuration>

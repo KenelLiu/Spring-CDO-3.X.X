@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="WARN" monitorInterval="10">
+	<!-- 定义配置  -->
+	<Properties>
+        <Property name="pattern_layout">%d{yyyy-MM-dd HH:mm:ss.SSS} [%5p] [%t]( %F,%L )-%m%n</Property>
+        <Property name="log_home">D:/tmp/logs</Property>
+    </Properties>
+
+    <!-- 先定义所有的appender %d{yyyy-MM-dd HH:mm:ss} - %p %l - %m%n -->
+    <appenders>
+    <!-- 输出控制台的配置 -->
+        <console name="console" target="SYSTEM_OUT">
+        <!-- 输出日志的格式 -->
+            <PatternLayout pattern="${pattern_layout}"/>
+        </console>
+    <!-- 这个会打印出所有的info及以下级别的信息，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面并进行压缩，作为存档  -->
+        <RollingFile name="RollingFileInfo" fileName="${log_home}/info.log"
+                     filePattern="${log_home}/info-%d{yyyy-MM-dd}-%i.log">
+            <!-- 控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->        
+            <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="${pattern_layout}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="10 KB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>        
+        
+        <RollingFile name="RollingFileWarn" fileName="${log_home}/warn.log"
+                     filePattern="${log_home}/warn-%d{yyyy-MM-dd}-%i.log">
+            <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="${pattern_layout}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+       		 <!-- DefaultRolloverStrategy属性如不设置，则默认为最多同一文件夹下7个文件，这里设置了20 -->
+            <DefaultRolloverStrategy max="20"/>
+        </RollingFile>
+              
+        <RollingFile name="RollingFileError" fileName="${log_home}/error.log"
+                     filePattern="${log_home}/error-%d{yyyy-MM-dd}-%i.log">
+            <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="${pattern_layout}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+             <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+    </appenders>
+
+    <!-- 然后定义logger，只有定义了logger并引入的appender，appender才会生效 -->
+    <loggers>
+        <!-- 过滤掉spring和mybatis的一些无用的DEBUG信息 -->
+        <logger name="org.springframework" level="info"></logger>
+        <logger name="org.mybatis" level="INFO"></logger>
+        <root level="INFO">
+            <appender-ref ref="console"/>
+            <appender-ref ref="RollingFileInfo"/>
+            <appender-ref ref="RollingFileWarn"/>
+            <appender-ref ref="RollingFileError"/>
+        </root>
+    </loggers>
+</configuration>
