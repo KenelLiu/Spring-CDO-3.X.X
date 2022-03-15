@@ -7,12 +7,12 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Properties;
 
-import org.apache.commons.dbcp2.BasicDataSource;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.cdo.field.Field;
 import com.cdo.util.sql.SQLUtil;
-import com.cdoframework.cdolib.base.Return;
 import com.cdoframework.cdolib.data.cdo.CDO;
 import com.cdoframework.cdolib.data.cdo.CDOArrayField;
 
@@ -25,7 +25,7 @@ public class DataEngine implements IDataEngine{
 	
 	// 内部对象,所有在本类中创建并使用的对象在此声明--------------------------------------------------------------
 	protected DBPool dbPool;   
-	
+	private static Log logger=LogFactory.getLog(DataEngine.class);
 
 	/**
 	 * 获取一个数据库连接
@@ -401,27 +401,14 @@ public class DataEngine implements IDataEngine{
 	// 事件定义,所有在本类中定义并调用，由派生类实现或重载的事件类方法(一般为on...ed)在此定义---------------------
 	public void onException(String strText,Exception e)
 	{
+		logger.error("Database Exception: "+strText+"\r\n"+e+":"+e);
 	}
 
-	public void onSQLStatement(String strSQL)
-	{
-		
-	}
-	
-	public void onExecuteSQL(String strSQL,ArrayList<String> alParaName,CDO cdoRequest){
-		
-	}
-	
-	private int executeCount(Connection conn,String strSQL,CDO cdoRequest){
-		//TODO SQL语法分析,统计数量
-		return 0;
-	}
 
 	// 构造函数,所有构造函数在此定义------------------------------------------------------------------------------
 
 	public DataEngine()
 	{
-		
 
 		//strSystemCharset=System.getProperty("sun.jnu.encoding");
 	}

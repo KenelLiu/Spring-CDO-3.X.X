@@ -131,8 +131,4 @@ public interface IDataEngine{
 
 	// 事件定义,所有在本类中定义并调用，由派生类实现或重载的事件类方法(一般为on...ed)在此定义---------------------
 	public void onException(String strText,Exception e);
-
-	public void onSQLStatement(String strSQL);
-	
-	public void onExecuteSQL(String strSQL,ArrayList<String> alParaName,CDO cdoRequest);
 }
