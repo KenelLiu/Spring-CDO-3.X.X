@@ -152,7 +152,7 @@ public class Analyzed {
 			val.append('}');
 			//因为log4j中 debug 与disconf依赖的logback中的debug 冲突导致输出不了数据，这儿改成info,判断使用debug
 			if(logger.isDebugEnabled())
-				logger.info(strSQL+"\n"+val);
+				logger.debug(strSQL+"\n"+val);
 			if(bSaveDBLog){
 				saveDBLog(conn, strSQL,val, cdoRequest);
 			}
@@ -192,7 +192,7 @@ public class Analyzed {
 	public  void onSQLStatement(String strSQL)
 	{
 		if(logger.isDebugEnabled()){
-			logger.info("SQL:"+strSQL);
+			logger.debug("SQL:"+strSQL);
 		}
 	}
 }
