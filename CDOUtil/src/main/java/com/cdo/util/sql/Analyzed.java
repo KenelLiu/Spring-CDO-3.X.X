@@ -138,7 +138,7 @@ public class Analyzed {
 	}
 	
 	public  void onExecuteSQL(Connection conn,String strSQL,ArrayList<String> alParaName,CDO cdoRequest){
-		if (logger.isDebugEnabled() || bSaveDBLog) {
+		if (logger.isInfoEnabled() || bSaveDBLog) {
 			StringBuilder val = new StringBuilder("{");
 			for (int i = 0; i < alParaName.size(); i++) {
 				Field object = cdoRequest.getObject(alParaName.get(i));
@@ -151,8 +151,8 @@ public class Analyzed {
 			}
 			val.append('}');
 			//因为log4j中 debug 与disconf依赖的logback中的debug 冲突导致输出不了数据，这儿改成info,判断使用debug
-			if(logger.isDebugEnabled())
-				logger.debug(strSQL+"\n"+val);
+			if(logger.isInfoEnabled())
+				logger.info(strSQL+"\n"+val);
 			if(bSaveDBLog){
 				saveDBLog(conn, strSQL,val, cdoRequest);
 			}
@@ -191,8 +191,8 @@ public class Analyzed {
 	}
 	public  void onSQLStatement(String strSQL)
 	{
-		if(logger.isDebugEnabled()){
-			logger.debug("SQL:"+strSQL);
+		if(logger.isInfoEnabled()){
+			logger.info("SQL:"+strSQL);
 		}
 	}
 }
