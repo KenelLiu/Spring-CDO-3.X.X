@@ -13,7 +13,7 @@ import org.apache.commons.logging.LogFactory;
 import com.cdoPlugin.cdolib.database.DataServiceParse;
 import com.cdoPlugin.cdolib.database.TransDefine;
 import com.cdoPlugin.cdolib.database.xsd.SQLTrans;
-
+import com.cdoPlugin.exception.TransException;
 import com.cdoframework.cdolib.base.Return;
 import com.cdoframework.cdolib.data.cdo.CDO;
 
@@ -126,9 +126,11 @@ public class Service implements IService
 
 
 	/**
+	 * @throws TransException 
+	 * @throws SQLException 
 	 * @see {@link com.cdoPlugin.cdolib.servicebus.IService#handleTrans(com.cdoframework.cdolib.data.cdo.CDO, com.cdoframework.cdolib.data.cdo.CDO)}}
 	 */
-	public Return handleTrans(CDO cdoRequest,CDO cdoResponse){
+	public Return handleTrans(CDO cdoRequest,CDO cdoResponse) throws TransException, SQLException{
 		// 根据serviceName直接定位Service
 		long beginTime =0l;
 		if(logerStatis.isInfoEnabled())
@@ -152,7 +154,7 @@ public class Service implements IService
 				ret = this.executeDataServiceTrans(strTransName,cdoRequest,cdoResponse);							
 			}catch(Throwable e){				
 				logger.error("When handle data service "+strServiceName+"."+strTransName,e);
-				return Return.valueOf(-1,e.getMessage(),e);
+				throw new SQLException("When handle data service "+strServiceName+"."+strTransName, e);
 			}
 		}		
 		if(logerStatis.isInfoEnabled()) {

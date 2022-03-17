@@ -1,6 +1,7 @@
 
 package com.cdoPlugin.cdolib.servicebus;
 
+import com.cdoPlugin.exception.TransException;
 import com.cdoframework.cdolib.base.Return;
 import com.cdoframework.cdolib.data.cdo.CDO;
 
@@ -30,8 +31,9 @@ public interface ITransService extends IServiceObject
 	 * @param cdoRequest 事务请求对象，事务名用strTransName区分开
 	 * @param cdoResponse 事务应答对象
 	 * @return 事务处理结果，如果事务名不被支持，则返回null
+	 * @throws TransException 
 	 */
-	public Return processTrans(CDO cdoRequest, CDO cdoResponse);
+	public Return processTrans(CDO cdoRequest, CDO cdoResponse) throws TransException;
 
 	/**
 	 * 处理一个事务

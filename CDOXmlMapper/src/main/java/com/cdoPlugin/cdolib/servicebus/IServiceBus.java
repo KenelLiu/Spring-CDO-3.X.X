@@ -48,7 +48,10 @@
 
 package com.cdoPlugin.cdolib.servicebus;
 
+import java.sql.SQLException;
 import java.util.HashMap;
+
+import com.cdoPlugin.exception.TransException;
 import com.cdoframework.cdolib.base.Return;
 import com.cdoframework.cdolib.data.cdo.CDO;
 
@@ -67,8 +70,10 @@ public interface IServiceBus
 	 * @param cdoRequest 事务请求对象
 	 * @param cdoResponse 事务应答对象
 	 * @return 事务处理结果
+	 * @throws SQLException 
+	 * @throws TransException 
 	 */
-	Return handleTrans(CDO cdoRequest,CDO cdoResponse);
+	Return handleTrans(CDO cdoRequest,CDO cdoResponse) throws TransException, SQLException;
 
 	/**
 	 * 设置共享数据，共享数据可以在所有服务对象中共享

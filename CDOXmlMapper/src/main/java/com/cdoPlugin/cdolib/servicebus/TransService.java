@@ -12,6 +12,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.cdoPlugin.cdolib.annotation.TransName;
 import com.cdoPlugin.cdolib.database.IDataEngine;
+import com.cdoPlugin.exception.TransException;
 import com.cdoframework.cdolib.base.Return;
 import com.cdoframework.cdolib.data.cdo.CDO;
 /**
@@ -119,16 +120,15 @@ public abstract class TransService implements ITransService
 		
 
 	@Override
-	public final Return processTrans(CDO cdoRequest, CDO cdoResponse) {
+	public final Return processTrans(CDO cdoRequest, CDO cdoResponse) throws TransException {
 		String strTransName = cdoRequest.getStringValue(ITransService.TRANSNAME_KEY);
 		Method method = null;
 		if((method = transMap.get(strTransName)) != null) {
-			Return ret=null;
 			try{
 				return (Return) method.invoke(this, cdoRequest, cdoResponse);			
 			}catch(Throwable e){
 				logger.error(strTransName+":函数调用发生错误,message="+e.getMessage(),e);
-				return Return.valueOf(-99, "调用某些方法处理数据发生错误,请查看后台日志.");
+				throw new TransException(strTransName+":函数调用发生错误,message="+e.getMessage(),e);
 			}
 		} 
 		return null;

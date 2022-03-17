@@ -1,5 +1,6 @@
 package com.cdoPlugin.cdolib.servicebus;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -10,6 +11,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.cdoPlugin.cdolib.database.DataServiceParse;
+import com.cdoPlugin.exception.TransException;
 import com.cdoframework.cdolib.base.Return;
 import com.cdoframework.cdolib.data.cdo.CDO;
 import com.cdoframework.cdolib.util.Utility;
@@ -140,8 +142,10 @@ public class ServiceBus implements IServiceBus
 	 * @param cdoRequest 事务请求对象
 	 * @param cdoResponse 事务应答对象
 	 * @return 事务处理结果
+	 * @throws SQLException 
+	 * @throws TransException 
 	 */
-	public Return handleTrans(CDO cdoRequest,CDO cdoResponse)
+	public Return handleTrans(CDO cdoRequest,CDO cdoResponse) throws TransException, SQLException
 	{
 
 		String strServiceName=cdoRequest.exists(ITransService.SERVICENAME_KEY)?cdoRequest.getStringValue(ITransService.SERVICENAME_KEY):null;

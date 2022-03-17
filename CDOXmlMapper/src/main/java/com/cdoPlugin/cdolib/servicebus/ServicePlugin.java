@@ -8,6 +8,7 @@ import org.apache.commons.logging.LogFactory;
 import com.cdoPlugin.cdolib.database.xsd.DataService;
 import com.cdoPlugin.cdolib.servicebus.xsd.ServiceConfig;
 import com.cdoPlugin.cdolib.servicebus.xsd.TransService;
+import com.cdoPlugin.exception.TransException;
 import com.cdoframework.cdolib.base.Return;
 import com.cdoframework.cdolib.data.cdo.CDO;
 import com.cdoframework.cdolib.util.Utility;
@@ -142,7 +143,7 @@ public class ServicePlugin implements IServicePlugin
 	
 
 	// 接口实现,所有实现接口函数的实现在此定义--------------------------------------------------------------------
-	public Return handleTrans(CDO cdoRequest,CDO cdoResponse)
+	public Return handleTrans(CDO cdoRequest,CDO cdoResponse) throws TransException, SQLException
 	{
 
 		String strServiceName=cdoRequest.exists(ITransService.SERVICENAME_KEY)?cdoRequest.getStringValue(ITransService.SERVICENAME_KEY):null;

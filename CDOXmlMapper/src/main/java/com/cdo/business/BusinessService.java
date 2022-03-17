@@ -1,10 +1,13 @@
 package com.cdo.business;
 
+import java.sql.SQLException;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.cdoPlugin.cdolib.servicebus.IServiceBus;
 import com.cdoPlugin.cdolib.servicebus.ServiceBus;
+import com.cdoPlugin.exception.TransException;
 import com.cdoframework.cdolib.base.Return;
 import com.cdoframework.cdolib.data.cdo.CDO;
 import com.cdoframework.cdolib.util.Utility;
@@ -99,7 +102,7 @@ public class BusinessService
 		this.bIsRunning=false;
 	}
 
-	public Return handleTrans(CDO cdoRequest,CDO cdoResponse){
+	public Return handleTrans(CDO cdoRequest,CDO cdoResponse) throws TransException, SQLException{
 		Return ret=serviceBus.handleTrans(cdoRequest,cdoResponse);
 		if(ret==null){
 			return Return.valueOf(-1,"Invalid request","System.Error");
