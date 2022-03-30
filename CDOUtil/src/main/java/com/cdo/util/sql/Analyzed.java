@@ -2,14 +2,12 @@ package com.cdo.util.sql;
 
 import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.cdo.field.Field;
 import com.cdo.field.FieldType;
+import com.cdo.util.cache.LRUCache;
 import com.cdoframework.cdolib.data.cdo.CDO;
 
 
@@ -17,13 +15,8 @@ import com.cdoframework.cdolib.data.cdo.CDO;
 public class Analyzed {
 	
 	private static Log logger=LogFactory.getLog(Analyzed.class);
-	Map<String,AnalyzedSQL> hmAnalyzedSQL=new HashMap<String,AnalyzedSQL>();
+	LRUCache<String,AnalyzedSQL> hmAnalyzedSQL=new LRUCache<String,AnalyzedSQL>(30,1500);
 	private  boolean bSaveDBLog=false;//将框架里的日志保存数据表里
-	//============内部类,简单定义一个结构=========//
-	class AnalyzedSQL {
-		String strSQL;
-		ArrayList<String> alParaName;
-	}
 	
 	final static Analyzed instance=new Analyzed();
 	
@@ -128,7 +121,6 @@ public class Analyzed {
 		anaSQL=new AnalyzedSQL();
 		anaSQL.strSQL=strbSQL.toString();
 		anaSQL.alParaName=alParaName;
-
 		synchronized(hmAnalyzedSQL)
 		{
 			hmAnalyzedSQL.put(strSourceSQL,anaSQL);
@@ -136,6 +128,8 @@ public class Analyzed {
 
 		return anaSQL;
 	}
+	
+
 	
 	public  void onExecuteSQL(Connection conn,String strSQL,ArrayList<String> alParaName,CDO cdoRequest){
 		if (logger.isInfoEnabled() || bSaveDBLog) {

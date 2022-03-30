@@ -2,12 +2,10 @@ package com.cdoPlugin.cdolib.database;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-
 import com.cdo.field.Field;
+import com.cdo.util.sql.AnalyzedPreparedStatementSQL;
 import com.cdoframework.cdolib.data.cdo.CDO;
 import com.cdoframework.cdolib.data.cdo.CDOArrayField;
 
@@ -20,7 +18,7 @@ public interface IDataEngine{
 	 * @return
 	 * @throws SQLException
 	 */
-	public PreparedStatement prepareStatement(Connection conn,String strSourceSQL,CDO cdoRequest) throws SQLException;
+	public AnalyzedPreparedStatementSQL prepareStatement(Connection conn,String strSourceSQL,CDO cdoRequest) throws SQLException;
 	
 	/**
 	 * 读取当前的记录数据
@@ -58,18 +56,6 @@ public interface IDataEngine{
 	 * @throws Exception
 	 */
 	public Field executeQueryField(Connection conn,String strSourceSQL,CDO cdoRequest) throws SQLException,IOException;
-
-	/**
-	 * 接查询并输出第一条记录的第一个字段(含类型)
-	 * 
-	 * @param conn
-	 * @param strSourceSQL 含有{}变量符的原始SQL
-	 * @param cdoRequest
-	 * @param cdoResponse
-	 * @return
-	 * @throws Exception
-	 */
-	public Field executeQueryFieldExt(Connection conn,String strSourceSQL,CDO cdoRequest) throws SQLException,IOException;
 
 	/**
 	 * 查询并输出第一条记录
@@ -124,9 +110,5 @@ public interface IDataEngine{
 	// 事件处理,所有重载派生类的事件类方法(一般为on...ed)在此定义-------------------------------------------------
 
 	// 事件定义,所有在本类中定义并调用，由派生类实现或重载的事件类方法(一般为on...ed)在此定义---------------------
-	public void onException(String strText,Exception e);
-
-	public void onSQLStatement(String strSQL);
-	
-	public void onExecuteSQL(String strSQL,ArrayList<String> alParaName,CDO cdoRequest);
+	public void onException(String strText,AnalyzedPreparedStatementSQL analyzedSQL,CDO cdoRequest,Exception e);
 }

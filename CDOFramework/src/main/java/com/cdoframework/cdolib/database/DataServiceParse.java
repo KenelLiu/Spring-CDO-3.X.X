@@ -552,7 +552,7 @@ public class DataServiceParse
 				String strSQL=strbSQL.toString();
 
 				// 执行SQL				
-				Field objFieldValue=dataEngine.executeQueryFieldExt(connection,strSQL,cdoRequest);
+				Field objFieldValue=dataEngine.executeQueryField(connection,strSQL,cdoRequest);
 				if(objFieldValue==null)
 				{
 					continue;

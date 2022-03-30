@@ -22,7 +22,6 @@ import com.cdo.field.FieldType;
 import com.cdo.field.StringField;
 import com.cdo.field.TimeField;
 import com.cdo.field.array.ByteArrayField;
-import com.cdo.util.sql.Analyzed.AnalyzedSQL;
 import com.cdoframework.cdolib.data.cdo.CDO;
 import com.cdoframework.cdolib.util.Utility;
 public class SQLUtil {
@@ -329,6 +328,12 @@ public class SQLUtil {
 			}
 			return 1;
 		}
+		
+		/**
+		public static PreparedStatement prepareStatement(Connection conn,String strSourceSQL,CDO cdoRequest,String strCharset) throws SQLException{
+			return analyzedSQL(conn, strSourceSQL, cdoRequest, strCharset).ps;
+		}
+		**/
 		/**
 		 * 
 		 * @param conn 不能为null
@@ -338,21 +343,20 @@ public class SQLUtil {
 		 * @return
 		 * @throws SQLException
 		 */
-		public static PreparedStatement prepareStatement(Connection conn,String strSourceSQL,CDO cdoRequest,String strCharset) throws SQLException{
+		public static AnalyzedPreparedStatementSQL analyzedSQL(Connection conn,String strSourceSQL,CDO cdoRequest,String strCharset) throws SQLException{
 			Analyzed analyzed=Analyzed.getInstance();
 			analyzed.onSQLStatement(strSourceSQL);
-
-			PreparedStatement ps=null;
-
 			// 分析原始SQL语句，得到其中的变量
-			AnalyzedSQL anaSQL=analyzed.analyzeSourceSQL(strSourceSQL);
-			if(anaSQL==null)
-			{
+			AnalyzedSQL anaSQL=analyzed.analyzeSourceSQL(strSourceSQL);			
+			if(anaSQL==null){
 				throw new SQLException("Analyze source SQL exception: "+strSourceSQL);
 			}
+			AnalyzedPreparedStatementSQL analyzedPreparedStatementSQL=new AnalyzedPreparedStatementSQL();
+			analyzedPreparedStatementSQL.anaSQL=anaSQL;
+			analyzedPreparedStatementSQL.ps=null;
 			// 准备JDBC语句
-			try
-			{
+			PreparedStatement ps=null;
+			try{
 				ps=conn.prepareStatement(anaSQL.strSQL);
 			
 				int nParaCount=anaSQL.alParaName.size();
@@ -424,13 +428,12 @@ public class SQLUtil {
 					}
 				}
 				analyzed.onExecuteSQL(conn,anaSQL.strSQL, anaSQL.alParaName, cdoRequest);
-			}
-			catch(SQLException e)
-			{
+			}catch(Exception e){
 				closeStatement(ps);
-				throw e;
-			}
-			return ps;						
+				throw new SQLException(e.getMessage(),e);
+			}			
+			analyzedPreparedStatementSQL.ps=ps;
+			return analyzedPreparedStatementSQL;						
 		}				
 	/**
 	 * 	
