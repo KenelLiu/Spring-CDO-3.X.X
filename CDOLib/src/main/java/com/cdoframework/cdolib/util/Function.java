@@ -85,61 +85,83 @@ public class Function
 	    }
 		return sb.toString();
 	}	
-
 	public static String FormatTextForHTML(String strText){
+		return FormatTextForHTML(strText,null);
+	}
+	/**
+	 * 
+	 * @param strText
+	 * @param excludeChar 字符不做处理
+	 * @return
+	 */
+	public static String FormatTextForHTML(String strText,char[] excludeChar){
 		if(strText==null)return null;
 	    int len= strText.length();
 	    StringBuilder sb= new StringBuilder(len);
 	    for (int i = 0; i < len; i++) {
 	      char c = strText.charAt(i);
-	      switch (c) {
-	      case '\'':
-	        sb.append("&#039;");	       
-	        break;
-	      case '<':
-	        sb.append("&lt;");
-	        break;
-	      case '>':
-	        sb.append("&gt;");
-	        break;
-	      case '&':
-	        sb.append("&amp;");
-	        break;
-	      case '"':
-	        sb.append("&quot;");
-	        break;
-	      case '\\':
-	        //sb.append("\\\\");
-	    	sb.append("&#092;");    	 
-	        break;
-	      case '/':
-	      	sb.append("&#47;");    	 
-	          break;        
-	      case '©':
-	        sb.append("&copy;");
-	        break;
-	      case '®':
-	        sb.append("&reg;");
-	        break;
-	      case '¥':
-	        sb.append("&yen;");
-	        break;
-	      case '€':
-	        sb.append("&euro;");
-	        break;
-	      case '™':
-	        sb.append("&#153;");
-	        break;
-		  case ' ':
-			 sb.append("&nbsp;");
-			 break;        
-	      case '\r':
-	        break;
-	      case '\n':
-	    	  sb.append("<br/>");
-	          break;        
-	      default:
-	        sb.append(c);
+	      //=========找到排除的字符=======//
+      	  if(excludeChar!=null && excludeChar.length>0){
+      		  boolean find=false;
+      		  for(int k=0;k<excludeChar.length;k++){      			
+      			if(excludeChar[k]==c){
+      				 sb.append(c);
+      				 find=true;
+      				 break;
+      			}
+      		  }
+      		  if(find){      			  
+      			  continue;
+      		  }
+      	  }	      
+	      switch (c){
+		      case '\'':
+		        sb.append("&#039;");	       
+		        break;
+		      case '<':
+		        sb.append("&lt;");
+		        break;
+		      case '>':
+		        sb.append("&gt;");
+		        break;
+		      case '&':
+		        sb.append("&amp;");
+		        break;
+		      case '"':
+		        sb.append("&quot;");
+		        break;
+		      case '\\':
+		        //sb.append("\\\\");
+		    	sb.append("&#092;");    	 
+		        break;
+		      case '/':
+		      	sb.append("&#47;");    	 
+		          break;        
+		      case '©':
+		        sb.append("&copy;");
+		        break;
+		      case '®':
+		        sb.append("&reg;");
+		        break;
+		      case '¥':
+		        sb.append("&yen;");
+		        break;
+		      case '€':
+		        sb.append("&euro;");
+		        break;
+		      case '™':
+		        sb.append("&#153;");
+		        break;
+			  case ' ':
+				 sb.append("&nbsp;");
+				 break;        
+		      case '\r':
+		        break;
+		      case '\n':
+		    	  sb.append("<br/>");
+		          break;        
+		      default:
+		        sb.append(c);
 	      }
 	    }
 	    return new String(sb.toString());		
