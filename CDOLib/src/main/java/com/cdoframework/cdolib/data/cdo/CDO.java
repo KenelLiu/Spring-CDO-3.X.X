@@ -772,7 +772,7 @@ public class CDO{
     
     //----------设置 指定类型Field的name和value------------------------//
    
-    public void setBooleanValue(String strFieldId,boolean bValue)
+    public CDO setBooleanValue(String strFieldId,boolean bValue)
     {    	
     	FieldId fieldId=this.parseFieldId(strFieldId);
     	if(fieldId==null)
@@ -781,9 +781,10 @@ public class CDO{
     	}
     	Field field=new BooleanField(fieldId.strFieldId,bValue);
    		this.setObjectValue(fieldId,FieldType.BOOLEAN_TYPE,bValue,field,this);
+   		return this;
     }
   
-    public void setByteValue(String strFieldId,byte byValue)
+    public CDO setByteValue(String strFieldId,byte byValue)
     {
     	FieldId fieldId=this.parseFieldId(strFieldId);
     	if(fieldId==null)
@@ -792,10 +793,11 @@ public class CDO{
     	}
     	Field field=new ByteField(fieldId.strFieldId,byValue);
 		this.setObjectValue(fieldId,FieldType.BYTE_TYPE,byValue,field,this);
+		return this;
     }
     
     
-    public void setShortValue(String strFieldId,short shValue)
+    public CDO setShortValue(String strFieldId,short shValue)
     {
     	
 
@@ -807,9 +809,10 @@ public class CDO{
     	
     	Field field=new ShortField(fieldId.strFieldId,shValue);
 		this.setObjectValue(fieldId,FieldType.SHORT_TYPE,shValue,field,this);
+		return this;
     }
 
-    public void setIntegerValue(String strFieldId,int nValue)
+    public CDO setIntegerValue(String strFieldId,int nValue)
     {
     	
 
@@ -820,9 +823,10 @@ public class CDO{
     	}
     	Field field=new IntegerField(fieldId.strFieldId,nValue);
 		this.setObjectValue(fieldId,FieldType.INTEGER_TYPE,nValue,field,this);
+		return this;
     }
 
-    public void setLongValue(String strFieldId,long lValue)
+    public CDO setLongValue(String strFieldId,long lValue)
     {
     	
     	
@@ -834,9 +838,10 @@ public class CDO{
     	}
     	Field field=new LongField(fieldId.strFieldId,lValue);
 		this.setObjectValue(fieldId,FieldType.LONG_TYPE,lValue,field,this);
+		return this;
     }
 
-    public void setFloatValue(String strFieldId,float fValue)
+    public CDO setFloatValue(String strFieldId,float fValue)
     {    
     	FieldId fieldId=this.parseFieldId(strFieldId);
     	if(fieldId==null)
@@ -845,9 +850,10 @@ public class CDO{
     	}
     	Field field=new FloatField(fieldId.strFieldId,fValue);
 		this.setObjectValue(fieldId,FieldType.FLOAT_TYPE,fValue,field,this);
+		return this;
     }
 
-    public void setDoubleValue(String strFieldId,double dValue)
+    public CDO setDoubleValue(String strFieldId,double dValue)
     {
     	FieldId fieldId=this.parseFieldId(strFieldId);
     	if(fieldId==null)
@@ -856,9 +862,10 @@ public class CDO{
     	}
     	Field field=new DoubleField(fieldId.strFieldId,dValue);
 		this.setObjectValue(fieldId,FieldType.DOUBLE_TYPE,dValue,field,this);
+		return this;
     }
 
-    public void setStringValue(String strFieldId,String strValue)
+    public CDO setStringValue(String strFieldId,String strValue)
     {
     	FieldId fieldId=this.parseFieldId(strFieldId);
     	if(fieldId==null)
@@ -867,13 +874,14 @@ public class CDO{
     	}
     	Field field=new StringField(fieldId.strFieldId,strValue);
 		this.setObjectValue(fieldId,FieldType.STRING_TYPE,strValue,field,this);
+		return this;
     }
     /**
      * 存储一个特殊的字段[NullField]用来保存Null值, 与其他字段【如:StringField,IntegerField】等地位相同
      * 多用于插入或更新数据库字段为为null值时使用
      * @param strFieldId
      */
-    public void setNullValue(String strFieldId){
+    public CDO setNullValue(String strFieldId){
 
     	FieldId fieldId=this.parseFieldId(strFieldId);
     	if(fieldId==null)
@@ -882,6 +890,7 @@ public class CDO{
     	}
     	Field field=new NullField(fieldId.strFieldId);
 		this.setObjectValue(fieldId,FieldType.NULL_TYPE,null,field,this);
+		return this;
     }
     /**
      * 该字段是否存储了Null值
@@ -899,7 +908,7 @@ public class CDO{
      * @param strFieldId
      * @param file
      */
-    public void setFileValue(String strFieldId,File file)
+    public CDO setFileValue(String strFieldId,File file)
     {
     	FieldId fieldId=this.parseFieldId(strFieldId);
     	if(fieldId==null)
@@ -910,9 +919,10 @@ public class CDO{
 		this.setObjectValue(fieldId,FieldType.FILE_TYPE,file,field,this);
 		if(fieldId.nType==FieldId.SIMPLE)
 			fileCount++;
+		return this;
     }
     
-    public void setDateValue(String strFieldId,String strValue)
+    public CDO setDateValue(String strFieldId,String strValue)
     {    	
     	FieldId fieldId=this.parseFieldId(strFieldId);
     	if(fieldId==null)
@@ -921,9 +931,10 @@ public class CDO{
     	}
     	Field field=new DateField(fieldId.strFieldId,strValue);
 		this.setObjectValue(fieldId,FieldType.DATE_TYPE,strValue,field,this);
+		return this;
     }
     
-    public void setDateValue(String strFieldId,long lValue)
+    public CDO setDateValue(String strFieldId,long lValue)
     {    	
 
     	FieldId fieldId=this.parseFieldId(strFieldId);
@@ -933,9 +944,10 @@ public class CDO{
     	}
     	Field field=new DateField(fieldId.strFieldId,lValue);
 		this.setObjectValue(fieldId,FieldType.DATE_TYPE,lValue,field,this);
+		return this;
     }
     
-    public void setTimeValue(String strFieldId,String strValue)
+    public CDO setTimeValue(String strFieldId,String strValue)
     {
     	
 
@@ -946,9 +958,10 @@ public class CDO{
     	}
     	Field field=new TimeField(fieldId.strFieldId,strValue);
 		this.setObjectValue(fieldId,FieldType.TIME_TYPE,strValue,field,this);
+		return this;
     }
 
-    public void setTimeValue(String strFieldId,long lValue)
+    public CDO setTimeValue(String strFieldId,long lValue)
     {
     	
 
@@ -959,9 +972,10 @@ public class CDO{
     	}
     	Field field=new TimeField(fieldId.strFieldId,lValue);
 		this.setObjectValue(fieldId,FieldType.TIME_TYPE,lValue,field,this);
+		return this;
     }
     
-    public void setDateTimeValue(String strFieldId,String strValue)
+    public CDO setDateTimeValue(String strFieldId,String strValue)
     {
     	
 
@@ -972,9 +986,10 @@ public class CDO{
     	}
     	Field field=new DateTimeField(fieldId.strFieldId,strValue);
 		this.setObjectValue(fieldId,FieldType.DATETIME_TYPE,strValue,field,this);
+		return this;
     }
 
-    public void setDateTimeValue(String strFieldId,long lValue)
+    public CDO setDateTimeValue(String strFieldId,long lValue)
     {
     	
     	FieldId fieldId=this.parseFieldId(strFieldId);
@@ -984,11 +999,12 @@ public class CDO{
     	}
     	Field field=new DateTimeField(fieldId.strFieldId,lValue);
 		this.setObjectValue(fieldId,FieldType.DATETIME_TYPE,lValue,field,this);
+		return this;
     }
     
 
     
-    public void setCDOValue(String strFieldId,CDO cdoValue)
+    public CDO setCDOValue(String strFieldId,CDO cdoValue)
     {
     	
 
@@ -999,12 +1015,11 @@ public class CDO{
     	}
     	Field field=new CDOField(fieldId.strFieldId,cdoValue);
 		this.setObjectValue(fieldId,FieldType.CDO_TYPE,cdoValue,field,this);
+		return this;
     }
 
-    public void setBooleanArrayValue(String strFieldId,boolean[] bsValue)
-    {
-    	
-
+    public CDO setBooleanArrayValue(String strFieldId,boolean[] bsValue)
+    {    
     	FieldId fieldId=this.parseFieldId(strFieldId);
     	if(fieldId==null)
     	{
@@ -1020,12 +1035,11 @@ public class CDO{
     		Field field=new BooleanArrayField(fieldId.strFieldId,bsValue);
     		this.setObjectValue(fieldId,FieldType.BOOLEAN_ARRAY_TYPE,bsValue,field,this);
     	}
+    	return this;
     }
 
-    public void setByteArrayValue(String strFieldId,byte[] bysValue)
-    {
-    	
-
+    public CDO setByteArrayValue(String strFieldId,byte[] bysValue)
+    {    	
     	FieldId fieldId=this.parseFieldId(strFieldId);
     	if(fieldId==null)
     	{
@@ -1041,12 +1055,11 @@ public class CDO{
     		Field field=new ByteArrayField(fieldId.strFieldId,bysValue);
     		this.setObjectValue(fieldId,FieldType.BYTE_ARRAY_TYPE,bysValue,field,this);
     	}
+    	return this;
     }
 
-    public void setShortArrayValue(String strFieldId,short[] shsValue)
-    {
-    	
-
+    public CDO setShortArrayValue(String strFieldId,short[] shsValue)
+    {    
     	FieldId fieldId=this.parseFieldId(strFieldId);
     	if(fieldId==null)
     	{
@@ -1062,12 +1075,11 @@ public class CDO{
     		Field field=new ShortArrayField(fieldId.strFieldId,shsValue);
     		this.setObjectValue(fieldId,FieldType.SHORT_ARRAY_TYPE,shsValue,field,this);
     	}
+    	return this;
     }
 
-    public void setIntegerArrayValue(String strFieldId,int[] nsValue)
-    {
-    	
-
+    public CDO setIntegerArrayValue(String strFieldId,int[] nsValue)
+    {    
     	FieldId fieldId=this.parseFieldId(strFieldId);
     	if(fieldId==null)
     	{
@@ -1083,11 +1095,11 @@ public class CDO{
     		Field field=new IntegerArrayField(fieldId.strFieldId,nsValue); 
     		this.setObjectValue(fieldId,FieldType.INTEGER_ARRAY_TYPE,nsValue,field,this);
     	}
+    	return this;
     }
-    public void setFloatArrayValue(String strFieldId,float[] fsValue)
-    {
-    	
-
+    
+    public CDO setFloatArrayValue(String strFieldId,float[] fsValue)
+    {    	
     	FieldId fieldId=this.parseFieldId(strFieldId);
     	if(fieldId==null)
     	{
@@ -1103,11 +1115,11 @@ public class CDO{
     		Field field=new FloatArrayField(fieldId.strFieldId,fsValue); 
     		this.setObjectValue(fieldId,FieldType.FLOAT_ARRAY_TYPE,fsValue,field,this);
     	}
+    	return this;
     }
-    public void setDoubleArrayValue(String strFieldId,double[] dblsValue)
+    
+    public CDO setDoubleArrayValue(String strFieldId,double[] dblsValue)
     {
-    	
-
     	FieldId fieldId=this.parseFieldId(strFieldId);
     	if(fieldId==null)
     	{
@@ -1123,8 +1135,9 @@ public class CDO{
     		Field field=new DoubleArrayField(fieldId.strFieldId,dblsValue); 
     		this.setObjectValue(fieldId,FieldType.DOUBLE_ARRAY_TYPE,dblsValue,field,this);
     	}
+    	return this;
     }
-    public void setLongArrayValue(String strFieldId,long[] lsValue)
+    public CDO setLongArrayValue(String strFieldId,long[] lsValue)
     {
     	
 
@@ -1143,8 +1156,9 @@ public class CDO{
     		Field field=new LongArrayField(fieldId.strFieldId,lsValue); 
     		this.setObjectValue(fieldId,FieldType.LONG_ARRAY_TYPE,lsValue,field,this);
     	}
+    	return this;
     }
-    public void setStringArrayValue(String strFieldId,String[] strsValue)
+    public CDO setStringArrayValue(String strFieldId,String[] strsValue)
     {
     	
 
@@ -1162,13 +1176,12 @@ public class CDO{
     	{
     		Field field=new StringArrayField(fieldId.strFieldId,strsValue);  
     		this.setObjectValue(fieldId,FieldType.STRING_ARRAY_TYPE,strsValue,field,this);
-    	}
+    	}    	
+    	return this;    	
     }
 
-    public void setDateArrayValue(String strFieldId,String[] strsValue)
-    {
-    	
-
+    public CDO setDateArrayValue(String strFieldId,String[] strsValue)
+    {    	
     	FieldId fieldId=this.parseFieldId(strFieldId);
     	if(fieldId==null)
     	{
@@ -1184,12 +1197,11 @@ public class CDO{
     		Field field=new DateArrayField(fieldId.strFieldId,strsValue);  
     		this.setObjectValue(fieldId,FieldType.DATE_ARRAY_TYPE,strsValue,field,this);
     	}
+    	return this;
     }
 
-    public void setDateArrayValue(String strFieldId,long[] lsValue)
-    {
-    	
-
+    public CDO setDateArrayValue(String strFieldId,long[] lsValue)
+    {    	
     	FieldId fieldId=this.parseFieldId(strFieldId);
     	if(fieldId==null)
     	{
@@ -1205,12 +1217,11 @@ public class CDO{
     		Field field=new DateArrayField(fieldId.strFieldId,lsValue);  
     		this.setObjectValue(fieldId,FieldType.DATE_ARRAY_TYPE,lsValue,field,this);
     	}
+    	return this;
     }
     
-    public void setTimeArrayValue(String strFieldId,String[] strsValue)
+    public CDO setTimeArrayValue(String strFieldId,String[] strsValue)
     {
-    	
-
     	FieldId fieldId=this.parseFieldId(strFieldId);
     	if(fieldId==null)
     	{
@@ -1226,11 +1237,10 @@ public class CDO{
     		Field field=new TimeArrayField(fieldId.strFieldId,strsValue);  
     		this.setObjectValue(fieldId,FieldType.TIME_ARRAY_TYPE,strsValue,field,this);
     	}
+    	return this;
     }
-    public void setTimeArrayValue(String strFieldId,long[] lsValue)
+    public CDO setTimeArrayValue(String strFieldId,long[] lsValue)
     {
-    	
-
     	FieldId fieldId=this.parseFieldId(strFieldId);
     	if(fieldId==null)
     	{
@@ -1246,12 +1256,11 @@ public class CDO{
     		Field field=new TimeArrayField(fieldId.strFieldId,lsValue);  
     		this.setObjectValue(fieldId,FieldType.TIME_ARRAY_TYPE,lsValue,field,this);
     	}
+    	return this;
     }
     
-    public void setDateTimeArrayValue(String strFieldId,String[] strsValue)
-    {
-    	
-
+    public CDO setDateTimeArrayValue(String strFieldId,String[] strsValue)
+    {    
     	FieldId fieldId=this.parseFieldId(strFieldId);
     	if(fieldId==null)
     	{
@@ -1267,12 +1276,11 @@ public class CDO{
     		Field field=new DateTimeArrayField(fieldId.strFieldId,strsValue);     		
     		this.setObjectValue(fieldId,FieldType.DATETIME_ARRAY_TYPE,strsValue,field,this);
     	}
+    	return this;
     }
 
-    public void setDateTimeArrayValue(String strFieldId,long[] lsValue)
-    {
-    	
-
+    public CDO setDateTimeArrayValue(String strFieldId,long[] lsValue)
+    {    	
     	FieldId fieldId=this.parseFieldId(strFieldId);
     	if(fieldId==null)
     	{
@@ -1288,14 +1296,16 @@ public class CDO{
     		Field field=new DateTimeArrayField(fieldId.strFieldId,lsValue);     		
     		this.setObjectValue(fieldId,FieldType.DATETIME_ARRAY_TYPE,lsValue,field,this);
     	}
+    	return this;
     }
     
-    public void setCDOArrayValue(String strFieldId,CDO[] cdosValue)
+    public CDO setCDOArrayValue(String strFieldId,CDO[] cdosValue)
     {    	
     	this.setCDOListValue(strFieldId, Arrays.asList(cdosValue));
+    	return this;
     }
     
-    public void setCDOListValue(String strFieldId, List<CDO> cdosValue) {
+    public CDO setCDOListValue(String strFieldId, List<CDO> cdosValue) {
     	FieldId fieldId=this.parseFieldId(strFieldId);
     	if(fieldId==null)
     	{
@@ -1310,7 +1320,8 @@ public class CDO{
     	{
     		Field field=new CDOArrayField(fieldId.strFieldId,cdosValue); 
     		this.setObjectValue(fieldId,FieldType.CDO_ARRAY_TYPE,cdosValue,field,this);
-    	}		
+    	}
+    	return this;
 	}
   
     
@@ -1516,7 +1527,7 @@ public class CDO{
     }
     
     
-    public void setObjectExt(String strFieldId, Field field) throws RuntimeException
+    public CDO setObjectExt(String strFieldId, Field field) throws RuntimeException
     {
     	FieldId fieldId=this.parseFieldId(strFieldId);
     	if(fieldId==null)
@@ -1525,7 +1536,7 @@ public class CDO{
     	}
     	
    		this.setObjectValue(fieldId,field.getFieldType().getType(),field.getObjectValue(),field,this);
- 
+   		return this;
     }
 	
 	public void remove(String key)
